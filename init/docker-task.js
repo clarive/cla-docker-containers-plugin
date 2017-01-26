@@ -61,6 +61,7 @@ reg.register('service.task.docker', {
             config: {
                 errors: errorsType,
                 server: params.server,
+                user: params.user,
                 path: command,
                 output_error: params.output_error,
                 output_warn: params.output_warn,

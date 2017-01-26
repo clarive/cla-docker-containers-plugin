@@ -18,6 +18,12 @@
         allowBlank: false,
     });
 
+    var userTextField = Cla.ui.textField({
+        name: 'user',
+        fieldLabel: _('User'),
+        value: params.data.user
+    });
+
     var use = Cla.ui.comboBox({
         fieldLabel: _('Use'),
         name: 'use',
@@ -245,6 +251,7 @@
 
     return [
         server,
+        userTextField
         use,
         taskContainer,
         taskNone,
