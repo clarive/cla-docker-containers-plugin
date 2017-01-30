@@ -251,7 +251,7 @@
 
     return [
         server,
-        userTextField
+        userTextField,
         use,
         taskContainer,
         taskNone,
