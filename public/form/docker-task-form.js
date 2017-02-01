@@ -39,6 +39,11 @@
         taskImage.hide();
         taskNone.hide();
         commandParameters.hide();
+        optionsTask.allowBlank=true;
+        taskContainer.allowBlank=true;
+        taskImage.allowBlank=true;
+        taskNone.allowBlank=true;
+        commandParameters.allowBlank=true;
         if (v == 'Image') {
             optionsTask.show();
             imageName.show();
@@ -46,8 +51,14 @@
             containerName.hide();
             taskImage.show();
             taskvalue = taskImage.getValue();
+            optionsTask.allowBlank=false;
+            imageName.allowBlank=false;
+            imageVersion.allowBlank=false;
+            containerName.allowBlank=true;
+            taskImage.allowBlank=false;
             if (taskvalue == 'create' || taskvalue == 'run') {
                 commandParameters.show();
+                commandParameters.allowBlank=false;
             }
         } else if (v == 'Container') {
             optionsTask.show();
@@ -56,8 +67,14 @@
             containerName.show();
             taskContainer.show();
             taskvalue = taskContainer.getValue();
+            optionsTask.allowBlank=false;
+            imageName.allowBlank=true;
+            imageVersion.allowBlank=true;
+            containerName.allowBlank=false;
+            taskContainer.allowBlank=false;
             if (taskvalue == 'commit' || taskvalue == 'exec') {
                 commandParameters.show();
+                commandParameters.allowBlank=false;
             }
         } else if (v == 'Generic') {
             optionsTask.show();
@@ -65,6 +82,11 @@
             imageName.hide();
             imageVersion.hide();
             containerName.hide();
+            optionsTask.allowBlank=false;
+            taskNone.allowBlank=false;
+            imageName.allowBlank=true;
+            imageVersion.allowBlank=true;
+            containerName.allowBlank=true;
         }
     });
 
