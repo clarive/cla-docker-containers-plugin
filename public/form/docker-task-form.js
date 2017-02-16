@@ -12,7 +12,7 @@
 
     var server = Cla.ui.ciCombo({
         name: 'server',
-        class: 'BaselinerX::CI::generic_server',
+        class: 'generic_server',
         fieldLabel: _('Server'),
         value: params.data.server || '',
         allowBlank: false,
@@ -53,12 +53,11 @@
             taskvalue = taskImage.getValue();
             optionsTask.allowBlank=false;
             imageName.allowBlank=false;
-            imageVersion.allowBlank=false;
+            imageVersion.allowBlank=true;
             containerName.allowBlank=true;
             taskImage.allowBlank=false;
             if (taskvalue == 'create' || taskvalue == 'run') {
                 commandParameters.show();
-                commandParameters.allowBlank=false;
             }
         } else if (v == 'Container') {
             optionsTask.show();
@@ -74,7 +73,6 @@
             taskContainer.allowBlank=false;
             if (taskvalue == 'commit' || taskvalue == 'exec') {
                 commandParameters.show();
-                commandParameters.allowBlank=false;
             }
         } else if (v == 'Generic') {
             optionsTask.show();
