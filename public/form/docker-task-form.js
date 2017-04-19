@@ -16,6 +16,7 @@
         fieldLabel: _('Server'),
         value: params.data.server || '',
         allowBlank: false,
+        with_vars: 1
     });
 
     var use = Cla.ui.comboBox({
