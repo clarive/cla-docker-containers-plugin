@@ -2,7 +2,7 @@
 
 Execute a docker task. You can run applications in a container, packaged with all its dependencies and libraries.
 
-## Requeriments
+## Requirements
 
 This plugin requires Docker to be installed in the instance to work properly.
 
