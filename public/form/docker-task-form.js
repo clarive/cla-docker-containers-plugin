@@ -128,6 +128,7 @@
             ['history', 'history'],
             ['inspect', 'inspect'],
             ['push', 'push'],
+            ['pull', 'pull'],
             ['rmi', 'rmi'],
             ['run', 'run'],
             ['save', 'save'],
