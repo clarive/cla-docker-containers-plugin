@@ -24,9 +24,9 @@
         name: 'use',
         value: params.data.use || '',
         data: [
-            ['Generic'],
-            ['Image'],
-            ['Container']
+            ['Generic', 'Generic'],
+            ['Image', 'Image'],
+            ['Container', 'Container']
         ],
         singleMode: true,
         allowBlank: false
@@ -40,11 +40,11 @@
         taskImage.hide();
         taskNone.hide();
         commandParameters.hide();
-        optionsTask.allowBlank=true;
-        taskContainer.allowBlank=true;
-        taskImage.allowBlank=true;
-        taskNone.allowBlank=true;
-        commandParameters.allowBlank=true;
+        optionsTask.allowBlank = true;
+        taskContainer.allowBlank = true;
+        taskImage.allowBlank = true;
+        taskNone.allowBlank = true;
+        commandParameters.allowBlank = true;
         if (v == 'Image') {
             optionsTask.show();
             imageName.show();
@@ -52,11 +52,11 @@
             containerName.hide();
             taskImage.show();
             taskvalue = taskImage.getValue();
-            optionsTask.allowBlank=false;
-            imageName.allowBlank=false;
-            imageVersion.allowBlank=true;
-            containerName.allowBlank=true;
-            taskImage.allowBlank=false;
+            optionsTask.allowBlank = false;
+            imageName.allowBlank = false;
+            imageVersion.allowBlank = true;
+            containerName.allowBlank = true;
+            taskImage.allowBlank = false;
             if (taskvalue == 'create' || taskvalue == 'run') {
                 commandParameters.show();
             }
@@ -67,11 +67,11 @@
             containerName.show();
             taskContainer.show();
             taskvalue = taskContainer.getValue();
-            optionsTask.allowBlank=false;
-            imageName.allowBlank=true;
-            imageVersion.allowBlank=true;
-            containerName.allowBlank=false;
-            taskContainer.allowBlank=false;
+            optionsTask.allowBlank = false;
+            imageName.allowBlank = true;
+            imageVersion.allowBlank = true;
+            containerName.allowBlank = false;
+            taskContainer.allowBlank = false;
             if (taskvalue == 'commit' || taskvalue == 'exec') {
                 commandParameters.show();
             }
@@ -81,15 +81,15 @@
             imageName.hide();
             imageVersion.hide();
             containerName.hide();
-            optionsTask.allowBlank=false;
-            taskNone.allowBlank=false;
-            imageName.allowBlank=true;
-            imageVersion.allowBlank=true;
-            containerName.allowBlank=true;
+            optionsTask.allowBlank = false;
+            taskNone.allowBlank = false;
+            imageName.allowBlank = true;
+            imageVersion.allowBlank = true;
+            containerName.allowBlank = true;
         }
     });
 
-    var taskContainer = new Baseliner.ComboDouble({
+    var taskContainer = Cla.ui.comboBox({
         name: 'taskContainer',
         fieldLabel: _('Task Type'),
         data: [
@@ -108,10 +108,12 @@
             [' ', 'Write command in options task']
         ],
         value: params.data.taskContainer || '',
-        hidden: true
+        hidden: true,
+        singleMode: true,
+        width: 400
     });
 
-    taskContainer.on('select', function() {
+    taskContainer.on('addItem', function() {
         var valueTask = taskContainer.getValue();
         if (availableCommands['Container'].indexOf(valueTask) != -1) {
             commandParameters.show();
@@ -120,7 +122,7 @@
         }
     });
 
-    var taskImage = new Baseliner.ComboDouble({
+    var taskImage = Cla.ui.comboBox({
         name: 'taskImage',
         fieldLabel: _('Task Type'),
         data: [
@@ -135,10 +137,12 @@
             [' ', 'Write command in options task']
         ],
         value: params.data.taskImage || '',
-        hidden: true
+        hidden: true,
+        singleMode: true,
+        width: 400
     });
 
-    taskImage.on('select', function() {
+    taskImage.on('addItem', function() {
         var valueTask = taskImage.getValue();
         if (availableCommands['Image'].indexOf(valueTask) != -1) {
             commandParameters.show();
@@ -147,7 +151,7 @@
         }
     });
 
-    var taskNone = new Baseliner.ComboDouble({
+    var taskNone = Cla.ui.comboBox({
         name: 'taskNone',
         fieldLabel: _('Task Type'),
         data: [
@@ -158,7 +162,9 @@
             [' ', 'Write command in options task']
         ],
         value: params.data.taskNone || '',
-        hidden: true
+        hidden: true,
+        singleMode: true,
+        width: 400
     });
 
     var imageName = Cla.ui.textField({
@@ -182,7 +188,7 @@
         hidden: true
     });
 
-    var optionsTask = new Baseliner.ArrayGrid({
+    var optionsTask = Cla.ui.arrayGrid({
         fieldLabel: _('Options Task'),
         name: 'optionsTask',
         value: params.data.optionsTask,
@@ -191,7 +197,7 @@
         hidden: true
     });
 
-    var commandParameters = new Cla.ui.textArea({
+    var commandParameters = Cla.ui.textArea({
         name: 'commandParameters',
         fieldLabel: _('Command Parameters'),
         value: params.data.commandParameters || '',
@@ -201,85 +207,34 @@
             !(params.data.use && availableCommands[params.data.use].indexOf(params.data.taskContainer) != -1)
     });
 
-    var errors = new Baseliner.ComboSingle({
-        fieldLabel: _('Errors'),
-        name: 'errors',
-        value: params.data.errors || 'fail',
-        data: [
-            'fail',
-            'warn',
-            'custom',
-            'silent'
+    var errorBox = Cla.ui.errorManagementBox({
+        errorTypeName: 'errors',
+        errorTypeValue: params.data.errors || 'fail',
+        rcOkName: 'rcOk',
+        rcOkValue: params.data.rcOk,
+        rcWarnName: 'rcWarn',
+        rcWarnValue: params.data.rcWarn,
+        rcErrorName: 'rcError',
+        rcErrorValue: params.data.rcError,
+        errorTabsValue: params.data
+    })
+
+    var panel = Cla.ui.panel({
+        layout: 'form',
+        items: [
+            server,
+            use,
+            taskContainer,
+            taskNone,
+            taskImage,
+            optionsTask,
+            imageName,
+            imageVersion,
+            containerName,
+            commandParameters,
+            errorBox
         ]
     });
 
-    var customError = new Ext.Panel({
-        layout: 'column',
-        fieldLabel: _('Return Codes'),
-        frame: true,
-        hidden: params.data.errors != 'custom',
-        items: [{
-            layout: 'form',
-            columnWidth: .33,
-            labelAlign: 'top',
-            frame: true,
-            items: {
-                xtype: 'textfield',
-                anchor: '100%',
-                fieldLabel: _('Ok'),
-                name: 'rcOk',
-                value: params.data.rcOk
-            }
-        }, {
-            layout: 'form',
-            columnWidth: .33,
-            labelAlign: 'top',
-            frame: true,
-            items: {
-                xtype: 'textfield',
-                anchor: '100%',
-                fieldLabel: _('Warn'),
-                name: 'rcWarn',
-                value: params.data.rcWarn
-            }
-        }, {
-            layout: 'form',
-            columnWidth: .33,
-            labelAlign: 'top',
-            frame: true,
-            items: {
-                xtype: 'textfield',
-                anchor: '100%',
-                fieldLabel: _('Error'),
-                name: 'rcError',
-                value: params.data.rcError
-            }
-        }],
-        show_hide: function() {
-            errors.getValue() == 'custom' ? this.show() : this.hide();
-            this.doLayout();
-        }
-    });
-
-    errors.on('select', function() {
-        customError.show_hide()
-    });
-
-    return [
-        server,
-        use,
-        taskContainer,
-        taskNone,
-        taskImage,
-        optionsTask,
-        imageName,
-        imageVersion,
-        containerName,
-        commandParameters,
-        errors,
-        customError,
-        new Baseliner.ErrorOutputTabs({
-            data: params.data
-        })
-    ]
+    return panel;
 })
