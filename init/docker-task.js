@@ -72,7 +72,7 @@ reg.register('service.docker.task', {
 
         log.info("Launching command: " + command);
 
-        output = launchDockerCommand(sever, command, errorsType, params);
+        output = launchDockerCommand(server, command, errorsType, params);
 
         log.info("Command finished");
 
