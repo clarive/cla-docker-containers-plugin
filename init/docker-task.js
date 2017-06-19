@@ -76,6 +76,6 @@ reg.register('service.docker.task', {
 
         log.info("Command finished");
 
-        return output.response;
+        return output;
     }
 });
