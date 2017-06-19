@@ -17,6 +17,21 @@ ci.createClass("DockerInstance", {
             isa: "Str",
             required: true
         }
-    }
+    },
+    methods: {
+        terminate: function () {
+            var log = require("cla/log");
+            var ci = require("cla/ci");
 
+            var server = this.server();
+            var serverCi = ci.load(server[0]);
+
+            var agent = serverCi.connect();
+            var execute = agent.execute('docker stop ' + this.id());
+
+            log.info("Container " + this.id() + " terminated");
+
+            return 1;
+        }
+    }
 });

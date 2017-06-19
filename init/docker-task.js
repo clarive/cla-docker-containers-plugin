@@ -79,3 +79,19 @@ reg.register('service.docker.task', {
         return output;
     }
 });
+
+reg.register('service.docker.terminate_container', {
+    name: 'Docker Terminate Container',
+    icon: 'plugin/cla-docker-plugin/icon/logo-docker.svg',
+    form: '/plugin/cla-docker-plugin/form/docker-terminate_container-form.js',
+
+    handler: function(ctx, params) {
+        var ci = require("cla/ci");
+        var log = require("cla/log");
+
+        var instanceId = params.instance[0];
+        var instanceCi = ci.load(instanceId);
+
+        var output = instanceCi.terminate();
+    }
+});
