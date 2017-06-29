@@ -52,5 +52,4 @@ Example:
             Ok: *Hello
             Capture:
 
-
-
+This service will return the console output for the command.
