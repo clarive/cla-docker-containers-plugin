@@ -29,7 +29,7 @@ ci.createClass("DockerInstance", {
             var agent = serverCi.connect();
             var execute = agent.execute('docker stop ' + this.id());
 
-            log.info("Container " + this.id() + " terminated");
+            log.info(_("Container ") + this.id() + _(" terminated"));
 
             return 1;
         }

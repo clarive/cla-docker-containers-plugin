@@ -1,0 +1,63 @@
+#: init/docker-instance.js
+msgid "Container "
+msgstr "Contenedor "
+
+#: init/docker-instance.js
+msgid " terminated"
+msgstr " parado"
+
+#: init/docker-task.js public/form/docker-task-form.js
+msgid "Docker Task"
+msgstr "Tarea de Docker"
+
+#: init/docker-task.js
+msgid "Launching command: "
+msgstr "Lanzando comando: "
+
+#: init/docker-task.js
+msgid "Command finished"
+msgstr "Comando finalizado"
+
+#: init/docker-task.js
+msgid "Docker Terminate Container"
+msgstr "Detener container de Docker"
+
+#: public/form/docker-instance.js public/form/docker-task-form.js
+msgid "Server"
+msgstr "Servidor"
+
+#: public/form/docker-instance.js
+msgid "Instance ID"
+msgstr "ID de la instancia"
+
+#: public/form/docker-task-form.js
+msgid "Use"
+msgstr "Usar"
+
+#: public/form/docker-task-form.js
+msgid "Task Type"
+msgstr "Tipo de tarea"
+
+#: public/form/docker-task-form.js
+msgid "Image Name"
+msgstr "Nombre de la imagen"
+
+#: public/form/docker-task-form.js
+msgid "Image version"
+msgstr "Versión de la imagen"
+
+#: public/form/docker-task-form.js
+msgid "Container Name"
+msgstr "Nombre del container"
+
+#: public/form/docker-task-form.js
+msgid "Options Task"
+msgstr "Opciones de la tarea"
+
+#: public/form/docker-task-form.js
+msgid "Command Parameters"
+msgstr "Parametros del comando"
+
+#: public/form/docker-terminate_container-form.js
+msgid "Instance"
+msgstr "Instancia"

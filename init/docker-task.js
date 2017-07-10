@@ -1,7 +1,7 @@
 var reg = require('cla/reg');
 
 reg.register('service.docker.task', {
-    name: 'Docker Task',
+    name: _('Docker Task'),
     icon: 'plugin/cla-docker-plugin/icon/logo-docker.svg',
     form: '/plugin/cla-docker-plugin/form/docker-task-form.js',
 
@@ -27,7 +27,7 @@ reg.register('service.docker.task', {
         var launchDockerCommand = function(server, command, errorsType, params) {
 
             output = reg.launch('service.scripting.remote', {
-                name: 'Docker Task',
+                name: _('Docker Task'),
                 config: {
                     errors: errorsType,
                     server: server,
@@ -70,18 +70,18 @@ reg.register('service.docker.task', {
             }
         }
 
-        log.info("Launching command: " + command);
+        log.info(_("Launching command: ") + command);
 
         output = launchDockerCommand(server, command, errorsType, params);
 
-        log.info("Command finished");
+        log.info(_("Command finished"));
 
         return output;
     }
 });
 
 reg.register('service.docker.terminate_container', {
-    name: 'Docker Terminate Container',
+    name: _('Docker Terminate Container'),
     icon: 'plugin/cla-docker-plugin/icon/logo-docker.svg',
     form: '/plugin/cla-docker-plugin/form/docker-terminate_container-form.js',
 

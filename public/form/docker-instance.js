@@ -10,7 +10,7 @@
         }),
         Cla.ui.textField({
             name: 'id',
-            fieldLabel: 'Instance ID',
+            fieldLabel: _('Instance ID'),
             allowBlank: false
         })
     ]
