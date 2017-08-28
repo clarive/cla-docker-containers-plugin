@@ -2,6 +2,10 @@
 
 Execute a docker task. You can run applications in a container, packaged with all its dependencies and libraries.
 
+## What is Docker
+
+Docker is a software technology providing containers. Docker provides an additional layer of abstraction and automation of operating-system-level virtualization on Windows and Linux.
+
 ## Requirements
 
 This plugin requires Docker to be installed in the instance to work properly.
