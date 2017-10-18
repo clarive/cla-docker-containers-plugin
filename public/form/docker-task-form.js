@@ -1,8 +1,5 @@
 (function(params) {
-    Cla.help_push({
-        title: _('Docker Task'),
-        path: 'rules/palette/generic/docker-task'
-    });
+
     var data = params.data || {};
     var availableCommands = {
         Generic: [''],

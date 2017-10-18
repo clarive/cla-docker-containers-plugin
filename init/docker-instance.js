@@ -4,8 +4,8 @@ ci.createRole("Docker");
 
 ci.createClass("DockerInstance", {
     form: '/plugin/cla-docker-plugin/form/docker-instance.js',
-    icon: 'plugin/cla-docker-plugin/icon/logo-docker.svg',
-    roles: ["Docker"],
+    icon: '/plugin/cla-docker-plugin/icon/logo-docker.svg',
+    roles: ["Docker", "ClariveSE"],
     has: {
         server: {
             is: "rw",
