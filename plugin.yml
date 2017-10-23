@@ -1,7 +1,7 @@
 name: Clarive Docker Plugin
 description: Docker plugin can execute commands for Docker from Clarive
 version: 1.0
-icon: https://github.com/clarive/cla-docker-plugin/public/icon/logo-docker.svg
+icon: https://cdn.rawgit.com/clarive/cla-docker-plugin/master/public/icon/logo-docker.svg?sanitize=true
 url: https://github.com/clarive/cla-docker-plugin
 requires:
   - clarive_version: 6.8 <= version
