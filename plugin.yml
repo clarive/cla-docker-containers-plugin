@@ -1,4 +1,4 @@
-name: Clarive Docker Plugin
+name: Docker Plugin
 description: Docker plugin can execute commands for Docker from Clarive
 version: 1.0
 icon: https://cdn.rawgit.com/clarive/cla-docker-plugin/master/public/icon/logo-docker.svg?sanitize=true
