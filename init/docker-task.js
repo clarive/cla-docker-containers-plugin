@@ -8,7 +8,7 @@ reg.register('service.docker.task', {
         moniker: 'docker_task',
         description: _('Launch a Docker command'),
         required: ['server', 'use', 'task'],
-        allow: ['server', 'task', 'use', 'options_task', 'taskNone', 'command_parameters', 'errors', 'task_container',
+        allow: ['server', 'user', 'task', 'use', 'options_task', 'task_none', 'command_parameters', 'errors', 'task_container',
             'task_image', 'image_name', 'image_version', 'container_name'
         ],
         mapper: {
@@ -52,10 +52,11 @@ reg.register('service.docker.task', {
 
         var log = require('cla/log');
         var reg = require('cla/reg');
+        var ci = require('cla/ci');
         var errorsType = params.errors || 'fail';
         var server = params.server;
         var command = '';
-        var output = '';
+        var commandOutput = '';
         var command = 'docker ';
         var task = '';
         var optionsTask = params.optionsTask || [];
@@ -63,18 +64,27 @@ reg.register('service.docker.task', {
         var imageOrContainer = '';
         var use = params.use || '';
         var taskRulebook = params.task;
+        var user = params.user || "";
 
         var availableCommands = {
             Image: ['run', 'create'],
             Container: ['commit', 'exec']
         };
 
-        var launchDockerCommand = function(server, command, errorsType, params) {
-            output = reg.launch('service.scripting.remote', {
+        var serverCheck = ci.findOne({
+            mid: server + ''
+        });
+        if (!serverCheck){
+            log.fatal(_("Server Resource doesn't exist"));
+        }
+
+        var launchDockerCommand = function(server, command, errorsType, params, user) {
+            var output = reg.launch('service.scripting.remote', {
                 name: _('Docker Task'),
                 config: {
                     errors: errorsType,
                     server: server,
+                    user: user,
                     path: command,
                     output_error: params.output_error,
                     output_warn: params.output_warn,
@@ -114,11 +124,11 @@ reg.register('service.docker.task', {
 
         log.info(_("Launching command: ") + command);
 
-        output = launchDockerCommand(server, command, errorsType, params);
+        commandOutput = launchDockerCommand(server, command, errorsType, params, user);
 
         log.info(_("Command finished"));
 
-        return output;
+        return commandOutput.output;
     }
 });
 
