@@ -21,17 +21,15 @@ directory in Clarive's instance.
 
 ## Parameters
 
-- **Server (parameter name: server)** - Server that holds the remote file, server to connect to.
-- **User (user)** - User which will be used to connect to the server.
-- **Use (use)** - We must select if we want to use Image commands, Containers commands or Generic commands
-- **Task (task)** - Depending on the selection of the field above we will see some commands or others.
-- **Option Task (options_task)** - This panel is to set the options of the selected command. If we select 'Write command in options task', we can write in the panel the command that we want with its options. We can find [here](https://docs.docker.com/engine/reference/commandline/) a list of docker commands and the options that we can put to each one of them.
-- **Image Name (image_name)** - Name of the image we want to use. This field only appears if we have selected Image in the Use field. If the command can be executed with a list of images, we can put several images separate with a space.
-- **Image Version (image_version)** - Version of the image we want to use. This is optional, this field only appears if we have selected Image in the Use field.
-- **Container Name (container_name)** - Name of the container we want to use. This field only appears if we have selected Container in the Use field. If the command can be executed with a list of containers, we can put several containers separate with a space.
-- **Command Parameters (command_parameters)** - This is optional, this field only appears when the command may need it. Usually for running commands into containers or images.
-
-**Only Clarive EE**
+- **Server** - Server that holds the remote file, server to connect to.
+- **User** - User which will be used to connect to the server.
+- **Use** - We must select if we want to use 'Image' commands, 'Container' commands or 'Generic' commands
+- **Task** - Depending on the selection of the field above we will see some commands or others.
+- **Option Task** - This panel is to set the options of the selected command. If we select 'Write command in options task', we can write in the panel the command that we want with its options. We can find [here](https://docs.docker.com/engine/reference/commandline/) a list of docker commands and the options that we can put to each one of them.
+- **Image Name** - Name of the image we want to use. This field only appears if we have selected Image in the Use field. If the command can be executed with a list of images, we can put several images separate with a space.
+- **Image Version** - Version of the image we want to use. This is optional, this field only appears if we have selected Image in the Use field.
+- **Container Name** - Name of the container we want to use. This field only appears if we have selected Container in the Use field. If the command can be executed with a list of containers, we can put several containers separate with a space.
+- **Command Parameters** - This is optional, this field only appears when the command may need it. Usually for running commands into containers or images.
 
 - **Errors and output** - These two fields are related to manage control errors. Options are:
    - **Fail and output error** - Search for configurated error pattern in script output. If found, an error message is displayed in monitor showing the match.
@@ -73,8 +71,11 @@ This example will download the hello-world image and execute it. So you should g
 
 If you want to use the plugin through the Rulebook, in any `do` block, use this ops as examples to configure the different parameters:
 
+- **server** - Server that holds the remote file, server to connect to. Name or mid.
+- **user** - User which will be used to connect to the server.
+- **command** - Write the command you wish to perform into an array.
 
-This operation will get your docker service information.
+The next operation will get your docker service information.
 
 ```yaml
 rule: Docker demo.
@@ -82,8 +83,8 @@ do:
    - docker_task:
        server: docker_server   # use the mid set to the resource you created
        user: "docker_server_user"
-       use: "Generic"
-       task: "info"
+       command:
+         - info
 ```
 
 This command will get all the information about your Docker, like number of images, running and stopped containers, etc.
@@ -95,11 +96,9 @@ do:
    - docker_task:
        server: docker_server   # use the mid set to the resource you created
        user: "docker_server_user"
-       use: "Image"
-       task: "run"
-       image_name: "hello-world"
-       image_version: "latest"
-       options_task: ["--rm"]
+       command:
+         - run
+         - hello-world:latest
 ```
 
 This example will download the hello-world image and execute it. So you should get a hello world message in the output.
@@ -110,28 +109,27 @@ If you want to execute a command inside an existing Docker container, just follo
 ```yaml
 do:
    - docker_task:
-       server: docker_server   # use the mid set to the resource you created
+       server: docker_server   # use the mid or name set to the resource you created
        user: "docker_server_user"
-       use: "Container"
-       task: "exec"
-       container_name: "container_id"
-       command_parameters: "ls"
-       options_task: ["-d"]
+       command:
+         - exec
+         - container_id
+         - ls
 ```
 
 This command will execute the 'ls' command in the container.
 
 
-If you want to save your output from the launched command into a variable, just follow the next example:
+If you want to save your command output into a variable, just follow the next example:
 
 ```yaml
 # This will save the output into the 'myvar' variable.
 do:
   - myvar = docker_task:
-      server: docker_server   # use the mid set to the resource you created
+      server: docker_server   # use the mid or name set to the resource you created
       user: "docker_server_user"
-      use: "Generic"
-      task: "info"
+      command:
+        - info
   - echo: ${myvar}
 ```
 
@@ -143,24 +141,36 @@ This service will return the console output generated by the Docker command exec
 
 ```yaml
 do:
-  - docker_task:
-       server: docker_server   # use the mid set to the resource you created
+  - myvar = docker_task:
+       server: docker_server   # use the mid or name set to the resource you created
        user: "clarive"
-       use: "Generic"
-       task: "ps"
+       command:
+         - version
+  - echo: ${myvar}
 ```
 
 For this command the output will be similar to this one:
 
 ```yaml
-CONTAINER ID ewgui34vrfw  
-IMAGE   registry:2  
-COMMAND  "/entrypoint.sh /etc/"    
-CREATED  5 months ago    
-STATUS  Up 3 hours    
-PORTS  0.0.0.0:5000->5000/tcp   
-NAMES  registry
+Client:
+ Version: 18.01.0-ce
+ API version: 1.35
+ Go version:  go1.9.2
+ Git commit:  03596f5
+ Built: Wed Jan 10 20:07:19 2018
+ OS/Arch: linux/amd64
+ Experimental:  false
+ Orchestrator:  swarm
 
+Server:
+ Engine:
+  Version:  18.01.0-ce
+  API version:  1.35 (minimum version 1.12)
+  Go version: go1.9.2
+  Git commit: 03596f5
+  Built:  Wed Jan 10 20:10:58 2018
+  OS/Arch:  linux/amd64
+  Experimental: false
 ```
 
 ## Possible configuration failures
@@ -169,7 +179,7 @@ NAMES  registry
 
 ```yaml
 OUTPUT: Redirecting to /bin/systemctl restart ntpd.service
-docker: 'pserfre' is not a docker command.
+docker: 'abc' is not a docker command.
 See 'docker --help'.
 ```
 
@@ -178,7 +188,7 @@ Make sure that the command is available in Docker.
 ### Parameter required
 
 ```yaml
-Error in rulebook (compile): Required argument(s) missing for op "docker_task": "task"
+Error in rulebook (compile): Required argument(s) missing for op "docker_task": "command"
 ```
 
 Make sure you have all required parameter defined.
@@ -197,10 +207,12 @@ To get available commands in Docker, just run this command:
 
 ```yaml
 do:
-   - docker_task:
-       server: generic_server-25   # use the mid set to the resource you created
-       use: "Generic"
-       task: "--help"
+   - myvar = docker_task:
+       server: docker_server   # use the mid set to the resource you created
+       user: clarive
+       command:
+         - --help
+   - echo: ${myvar}
 ```
 
 ## More questions?

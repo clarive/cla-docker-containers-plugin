@@ -7,12 +7,12 @@ reg.register('service.docker.task', {
     rulebook: {
         moniker: 'docker_task',
         description: _('Launch a Docker command'),
-        required: ['server', 'use', 'task'],
-        allow: ['server', 'user', 'task', 'use', 'options_task', 'task_none', 'command_parameters', 'errors', 'task_container',
+        required: ['server', 'command'],
+        allow: ['server', 'user', 'task', 'command', 'task_none', 'command_parameters', 'errors', 'task_container',
             'task_image', 'image_name', 'image_version', 'container_name'
         ],
         mapper: {
-            'options_task':'optionsTask',
+            'command':'optionsTask',
             'command_parameters': 'commandParameters',
             'task_container': 'taskContainer',
             'task_image': 'taskImage',
@@ -24,9 +24,8 @@ reg.register('service.docker.task', {
         examples: [{
             docker_task: {
                 server: 'docker_server',
-                use: 'Generic',
-                task: 'info',
-                options_task: ['-f']
+                user: 'clarive',
+                command: ['info', '-f']
             }
         }, {
             docker_task: {
@@ -35,14 +34,14 @@ reg.register('service.docker.task', {
                 task: 'create',
                 image_name: 'hello_world',
                 image_version: 'latest',
-                options_task: ['-d'],
+                command: ['-d'],
                 command_parameters: ''
             }
         }, {
             docker_task: {
                 server: 'docker_server',
                 use: 'Container',
-                task: 'exec',
+                command: 'exec',
                 container_name: 'first_container',
                 command_parameters: 'ls'
             }
@@ -62,9 +61,10 @@ reg.register('service.docker.task', {
         var optionsTask = params.optionsTask || [];
         var commandParameters = params.commandParameters || '';
         var imageOrContainer = '';
-        var use = params.use || '';
-        var taskRulebook = params.task;
+        var use = params.use || 'rulebook';
         var user = params.user || "";
+        var imageName = params.imageName || '';
+        var imageVersion = params.imageVersion || '';
 
         var availableCommands = {
             Image: ['run', 'create'],
@@ -72,11 +72,17 @@ reg.register('service.docker.task', {
         };
 
         var serverCheck = ci.findOne({
-            mid: server + ''
+            '$or': [{
+                name: server + ''
+            }, {
+                mid: server + ''
+            }]
         });
+
         if (!serverCheck){
             log.fatal(_("Server Resource doesn't exist"));
         }
+        var serverMid = serverCheck.mid;
 
         var launchDockerCommand = function(server, command, errorsType, params, user) {
             var output = reg.launch('service.scripting.remote', {
@@ -99,32 +105,29 @@ reg.register('service.docker.task', {
             return output;
         }
 
-        if (use == 'Image') {
-            task = params.taskImage || taskRulebook || '';
-            if (params.imageVersion != '') {
-                imageOrContainer = params.imageName + ':' + params.imageVersion || '';
+        if (use != 'rulebook') {
+            if (use == 'Image') {
+                task = params.taskImage || '';
+                imageOrContainer = (imageVersion != '') ? (imageName + ':' + imageVersion) : (imageName); 
+            } else if (use == 'Container') {
+                task = params.taskContainer || '';
+                imageOrContainer = params.containerName || '';
             } else {
-                imageOrContainer = params.imageName || '';
+                task = params.taskNone || '';
             }
-        } else if (use == 'Container') {
-            task = params.taskContainer || taskRulebook || '';
-            imageOrContainer = params.containerName || '';
-        } else {
-            task = params.taskNone || taskRulebook || '';
-        }
-        command += task;
-        command = command + " " + optionsTask.join(" ");
+            command += task;
+            command = command + " " + optionsTask.join(" ") + imageOrContainer;
 
-        if (use != 'Generic') {
-            command += ' ' + imageOrContainer;
-            if (availableCommands[use].indexOf(task) != -1) {
+            if (use != 'Generic' && availableCommands[use].indexOf(task) != -1) {
                 command += ' ' + commandParameters;
             }
+        } else {
+            command += optionsTask.join(" ");
         }
 
         log.info(_("Launching command: ") + command);
 
-        commandOutput = launchDockerCommand(server, command, errorsType, params, user);
+        commandOutput = launchDockerCommand(serverMid, command, errorsType, params, user);
 
         log.info(_("Command finished"));
 
