@@ -1,6 +1,6 @@
 # Docker Task Plugin
 
-<img src="https://cdn.rawgit.com/clarive/cla-docker-plugin/master/public/icon/logo-docker.svg?sanitize=true" alt="Docker Plugin" title="Docker Plugin" width="120" height="120">
+<img src="https://cdn.jsdelivr.net/gh/clarive/cla-docker-plugin/public/icon/logo-docker.svg?sanitize=true" alt="Docker Plugin" title="Docker Plugin" width="120" height="120">
 
 Execute a docker task. You can run applications in a container, packaged with all its dependencies and libraries from Clarive.
 
