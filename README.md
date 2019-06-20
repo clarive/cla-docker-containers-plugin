@@ -1,6 +1,6 @@
 # Docker Task Plugin
 
-<img src="https://cdn.rawgit.com/clarive/cla-docker-plugin/master/public/icon/logo-docker.svg?sanitize=true" alt="Docker Plugin" title="Docker Plugin" width="120" height="120">
+<img src="https://cdn.rawgit.com/clarive/cla-docker-containers-plugin/master/public/icon/logo-docker.svg?sanitize=true" alt="Docker Plugin" title="Docker Plugin" width="120" height="120">
 
 Execute a docker task. You can run applications in a container, packaged with all its dependencies and libraries from Clarive.
 
@@ -16,7 +16,7 @@ To install Docker you need to click [here](https://docs.docker.com/engine/instal
 
 ## Installing
 
-To install the plugin place the cla-docker-plugin folder inside `$CLARIVE_BASE/plugins`
+To install the plugin place the cla-docker-containers-plugin folder inside `$CLARIVE_BASE/plugins`
 directory in Clarive's instance.
 
 ## Parameters

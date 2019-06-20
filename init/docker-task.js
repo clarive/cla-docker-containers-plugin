@@ -2,8 +2,8 @@ var reg = require('cla/reg');
 
 reg.register('service.docker.task', {
     name: _('Docker Task'),
-    icon: '/plugin/cla-docker-plugin/icon/logo-docker.svg',
-    form: '/plugin/cla-docker-plugin/form/docker-task-form.js',
+    icon: '/plugin/cla-docker-containers-plugin/icon/logo-docker.svg',
+    form: '/plugin/cla-docker-containers-plugin/form/docker-task-form.js',
     rulebook: {
         moniker: 'docker_task',
         description: _('Launch a Docker command'),
@@ -108,7 +108,7 @@ reg.register('service.docker.task', {
         if (use != 'rulebook') {
             if (use == 'Image') {
                 task = params.taskImage || '';
-                imageOrContainer = (imageVersion != '') ? (imageName + ':' + imageVersion) : (imageName); 
+                imageOrContainer = (imageVersion != '') ? (imageName + ':' + imageVersion) : (imageName);
             } else if (use == 'Container') {
                 task = params.taskContainer || '';
                 imageOrContainer = params.containerName || '';
@@ -137,8 +137,8 @@ reg.register('service.docker.task', {
 
 reg.register('service.docker.terminate_container', {
     name: _('Docker Terminate Container'),
-    icon: '/plugin/cla-docker-plugin/icon/logo-docker.svg',
-    form: '/plugin/cla-docker-plugin/form/docker-terminate_container-form.js',
+    icon: '/plugin/cla-docker-containers-plugin/icon/logo-docker.svg',
+    form: '/plugin/cla-docker-containers-plugin/form/docker-terminate_container-form.js',
     rulebook: {
         moniker: 'docker_terminate',
         description: _('Terminate Docker instance'),
